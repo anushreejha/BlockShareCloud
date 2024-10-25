@@ -7,7 +7,7 @@ This project implements a simple decentralized cloud storage system with AES enc
 
 ### 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/anushreejha/BlockShareCloud
 cd project
 ```
 ### 2. Create a virtual environment and activate it:
@@ -40,5 +40,7 @@ python app.py
 
 ## How It Works
 **1.** When a user uploads a file, it is temporarily saved in the uploads directory.
+
 **2.** The application generates a random encryption key and uses it to encrypt the uploaded file.
+
 **3.** The encrypted file is saved with the .enc extension, retaining the original filename for ease of identification.
