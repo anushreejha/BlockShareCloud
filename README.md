@@ -6,33 +6,32 @@ This project implements a simple decentralized cloud storage system with AES enc
 ## Setup
 
 ### 1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd project
-   ```
+```bash
+git clone <repository-url>
+cd project
+```
 ### 2. Create a virtual environment and activate it:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # For macOS
-    # On Windows use `venv\Scripts\activate`
-    ```
+```bash
+python -m venv venv
+source venv/bin/activate  # For macOS
+# On Windows use `venv\Scripts\activate`
+```
 ### 3. Install the dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+pip install -r requirements.txt
+```
 ### 4. Create the uploads directory: 
-    ```bash
-    mkdir uploads
-    ```
+```bash
+mkdir uploads
+```
 ### 5. Run the application:
-    ```bash
-    python app.py
-    ```
-### 6. Open your browser and go to
 ```bash
 python app.py
 ```
-### to access the application.
+### 6. To access the application, open your browser and go to:
+```bash
+python app.py
+```
 
 ## Features
 - **File Upload:** Users can upload files through a simple web interface.
