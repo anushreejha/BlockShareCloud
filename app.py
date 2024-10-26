@@ -1,32 +1,43 @@
-from Crypto.Cipher import AES
-import os
 from flask import Flask, request, render_template
+import os
+from ipfs import IPFSClient
+from blockchain import Blockchain
 
 app = Flask(__name__)
+ipfs_client = IPFSClient()
+blockchain = Blockchain()
+UPLOAD_FOLDER = 'uploads'
 
-def encrypt_file(file_path, key):
-    cipher = AES.new(key, AES.MODE_EAX)
-    with open(file_path, 'rb') as file:
-        plaintext = file.read()
-    ciphertext, tag = cipher.encrypt_and_digest(plaintext)
-    with open(file_path + '.enc', 'wb') as file:
-        file.write(cipher.nonce)
-        file.write(tag)
-        file.write(ciphertext)
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 @app.route('/')
-def home():
-    return render_template('index.html')  # Main page template
+def index():
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     file = request.files['file']
-    file_path = os.path.join('uploads', file.filename)
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
     
-    key = os.urandom(16)  # Generate a random key
-    encrypt_file(file_path, key)
-    return 'File uploaded and encrypted!'
+    # Upload to IPFS
+    ipfs_hash = ipfs_client.upload_file(file_path)
+    
+    # Store in blockchain
+    blockchain.create_block(len(blockchain.chain), {'file_name': file.filename, 'ipfs_hash': ipfs_hash})
+    
+    return 'File uploaded and stored in IPFS! Hash: ' + ipfs_hash
+
+@app.route('/download', methods=['POST'])
+def download_file():
+    ipfs_hash = request.form['ipfs_hash']
+    
+    # Download the file from IPFS
+    file_obj = ipfs_client.download_file(ipfs_hash)
+    
+    # File is saved to local storage
+    return f'File {file_obj.name} downloaded from IPFS!'
 
 if __name__ == '__main__':
     app.run(debug=True)
