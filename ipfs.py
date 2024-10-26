@@ -3,8 +3,8 @@ import os
 
 class IPFSClient:
     def __init__(self):
-        self.client = ipfshttpclient.connect('/ip4/127.0.0.1/tcp/5001')
         # Connect to local IPFS daemon
+        self.client = ipfshttpclient.connect('/ip4/127.0.0.1/tcp/5001')
 
     def upload_file(self, file_path):
         res = self.client.add(file_path)
