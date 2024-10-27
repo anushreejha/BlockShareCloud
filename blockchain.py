@@ -17,7 +17,7 @@ class Block:
 class Blockchain:
     def __init__(self):
         self.chain = []
-        self.create_block(0, "Genesis Block")
+        self.create_block(0, {"message": "Genesis Block"})
 
     def create_block(self, index, data):
         timestamp = time.time()

@@ -35,15 +35,29 @@ def upload_file():
 def download_file():
     ipfs_hash = request.form['ipfs_hash']
     
+    # Search for the block with the given IPFS hash to retrieve the original filename
+    original_filename = None
+    for block in blockchain.chain:
+        if block.data.get('ipfs_hash') == ipfs_hash:
+            original_filename = block.data.get('file_name')
+            break
+    
+    if original_filename is None:
+        return 'Error: IPFS hash not found in the blockchain.'
+
     # Download the file from IPFS and save it locally in the 'downloads' folder
-    file_obj = ipfs_client.download_file(ipfs_hash, DOWNLOAD_FOLDER)  # Pass DOWNLOAD_FOLDER as second argument
+    file_obj = ipfs_client.download_file(ipfs_hash, DOWNLOAD_FOLDER)
     file_path = os.path.join(DOWNLOAD_FOLDER, ipfs_hash)  # Path where the file was saved
 
     if not os.path.exists(file_path):
         return f'Error: File {ipfs_hash} not found in local storage!'
 
-    # Serve the file for download
-    return send_file(file_path, as_attachment=True, download_name=f"{ipfs_hash}.file")
+    # Rename the downloaded file to its original filename with extension
+    final_file_path = os.path.join(DOWNLOAD_FOLDER, original_filename)
+    os.rename(file_path, final_file_path)
+
+    # Serve the file for download with the original filename and extension
+    return send_file(final_file_path, as_attachment=True, download_name=original_filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
