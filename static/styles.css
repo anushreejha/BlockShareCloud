@@ -1,15 +1,13 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('bg.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden; 
+    position: relative; 
 }
 
 .container {
@@ -20,12 +18,14 @@ body {
     max-width: 500px;
     width: 100%;
     text-align: center;
+    position: relative; 
+    z-index: 2; 
 }
 
 h1 {
     color: #1e90ff; 
     margin-bottom: 20px;
-    text-shadow: 1px 1px 10px rgba(30, 144, 255, 0.8); 
+    text-shadow: 1px 1px 10px rgba(30, 144, 255, 0.8); /* Subtle glow effect */
 }
 
 h2 {
@@ -80,6 +80,28 @@ form {
     background-color: #1c86ee; 
 }
 
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%; 
+    height: 100%;
+    background-image: url('bg.jpg');
+    background-size: cover;
+    background-position: center;
+    animation: scroll 40s linear infinite;
+    z-index: 1; 
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%); 
+    }
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 20px;
@@ -91,4 +113,3 @@ form {
         font-size: 14px;
     }
 }
-
